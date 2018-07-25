@@ -53,6 +53,10 @@ class Question(models.Model):
         now = timezone.now()
         return  now - datetime.timedelta(days=1) <= self.pub_date <= now
 
+    was_published_recently.admin_order_field = 'pub_date'   #define teh order when filtering using this property
+    was_published_recently.boolean = True       # set property to true to use official representation of true false?
+    was_published_recently.short_description = 'Published recently?'    #description in admin site
+    
 class Choice(models.Model):
     """
         django support general data relationship:

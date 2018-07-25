@@ -50,7 +50,7 @@ def vote(request, question_id):
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
         #error finding choice, return to table page and give error message
-        return render(request, 'template/polls/detail.html',{
+        return render(request, 'polls/detail.html',{
             'question': question,
             'error_message': "You did't select a choice or there is a problem with the choice you select.",
         })
@@ -64,7 +64,7 @@ def vote(request, question_id):
 
     #ListView displays the list of an object
 class IndexView(generic.ListView):
-    template_name = 'template/polls/index.html'
+    template_name = 'polls/index.html'
     #change name for auto-genetated context object
     context_object_name = 'latest_question_list'
     def get_queryset(self):
@@ -74,11 +74,11 @@ class IndexView(generic.ListView):
     # DetailView displays the detail page of an specific instance
 class DetailView(generic.DetailView):
     model = Question
-    template_name = 'template/polls/detail.html'
+    template_name = 'polls/detail.html'
     
 class ResultsView(generic.DetailView):
     model = Question
-    template_name = 'template/polls/results.html'
+    template_name = 'polls/results.html'
 
     
 

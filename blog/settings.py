@@ -60,7 +60,7 @@ ROOT_URLCONF = 'blog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR], # the path to PARENT DIRECTORY OF TEMPLATE DIR!!!
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),], # the path to PARENT DIRECTORY OF TEMPLATE DIR!!!???
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

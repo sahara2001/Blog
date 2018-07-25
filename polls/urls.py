@@ -11,11 +11,11 @@ urlpatterns = [
     # 不用考虑参数的位置。至于[0-9]+则是一个很简单的原生正则表达式，用于匹配一系列连续的数字，它匹配到的值也就是具体要传递的参数值。
 
     # ex: /polls/
-    re_path(r'^$', views.index, name='index'),
+    re_path(r'^$', views.IndexView.as_view(), name='index'),
     # ex: /polls/5/
-    re_path(r'^(?P<pk>[0-9]+)/$', views.detail, name='detail'),       # detail is the namespace of the path in django template engine
+    re_path(r'^(?P<pk>[0-9]+)/$', views.DetailView.as_view(), name='detail'),       # detail is the namespace of the path in django template engine
     # ex: /polls/5/results/
-    re_path(r'^(?P<pk>[0-9]+)/results/$', views.results, name='results'),
+    re_path(r'^(?P<pk>[0-9]+)/results/$', views.ResultsView.as_view(), name='results'),     #DetailView requires pk as parameter, therefore change
     # ex: /polls/5/vote/
-    re_path(r'^(?P<pk>[0-9]+)/vote/$', views.vote, name='vote'),
+    re_path(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),       #why not use pk? In accordance with function param?
 ]

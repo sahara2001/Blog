@@ -23,11 +23,9 @@ from django.urls import include
 urlpatterns = [
     # '^' denotes start with, and '/' denotes end-with
     re_path(r'^baba/settings/', admin.site.urls),
-    
-    re_path(r'index/', views.index),
 
     #二级路由
-    re_path(r'^polls/', include('polls.urls'))
+    re_path(r'^polls/', include('polls.urls')),
     #how did you catch it?
 
     # 函数中的question_id=’34’参数，是由(?P<question_id>[0-9]+)而来。

@@ -1,4 +1,5 @@
 from django.shortcuts import HttpResponse, get_object_or_404, render, HttpResponseRedirect
+from django.views import generic
 from .models import Question, Choice
 from django.template import loader
 from django.http import Http404
@@ -12,15 +13,16 @@ PAGES:
     - result: the polling result of a questionare
     - vote: voting for a specific choice in a question
 """
-def index(request):
-    #member of Question shows in runtime visiting databases
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    
-    data = {"latest_question_list": latest_question_list}
 
-    # difference?
-    #return HttpResponse(template.render(data,request))
-    return render(request,"template/polls/index.html", data)
+# def index(request):
+#    #member of Question shows in runtime visiting databases
+#    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+#    
+#   data = {"latest_question_list": latest_question_list}
+#
+#    # difference?
+#    #return HttpResponse(template.render(data,request))
+#    return render(request,"template/polls/index.html", data)
 
 """
     use get_object_or_404() to replace the try catch clause,
@@ -32,13 +34,15 @@ def index(request):
     3. 在选择计数器加一后，返回的是一个HttpResponseRedirect而不是先前我们常用的HttpResponse。HttpResponseRedirect需要一个参数：重定向的URL。这里有一个建议，当你成功处理POST数据后，应当保持一个良好的习惯，始终返回一个HttpResponseRedirect。这不仅仅是对Django而言，它是一个良好的WEB开发习惯。
     4. 我们在上面HttpResponseRedirect的构造器中使用了一个reverse()函数。它能帮助我们避免在视图函数中硬编码URL。它首先需要一个我们在URLconf中指定的name，然后是传递的数据。例如'/polls/3/results/'，其中的3是某个question.id的值。重定向后将进入polls:results对应的视图，并将question.id传递给它。白话来讲，就是把活扔给另外一个路由对应的视图去干。
 """
-def detail(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'template/polls/detail.html', {'question': question})
+#def detail(request, question_id):
+#    question = get_object_or_404(Question, pk=question_id)
+#    return render(request, 'template/polls/detail.html', {'question': question})
+#
+#def results(request, question_id):
+#    question = get_object_or_404(Question, pk=question_id) 
+#    return render(request, 'template/polls/results.html',{'question':question})
 
-def results(request, question_id):
-    question = get_object_or_404(Question, pk=question_id) 
-    return render(request, 'template/polls/results.html',{'question':question})
+
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)   
@@ -57,4 +61,24 @@ def vote(request, question_id):
         #save counts and jump back to the results page
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
+
+    #ListView displays the list of an object
+class IndexView(generic.ListView):
+    template_name = 'template/polls/index.html'
+    #change name for auto-genetated context object
+    context_object_name = 'latest_question_list'
+    def get_queryset(self):
+        """return 5 questionare just published"""
+        return Question.objects.order_by('-pub_date')[:5]
+
+    # DetailView displays the detail page of an specific instance
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'template/polls/detail.html'
+    
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'template/polls/results.html'
+
+    
 
